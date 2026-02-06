@@ -40,7 +40,7 @@ int main(){
     }
 
     do{
-        printf("Process ID: %u\tExecutable Name: %s\n", pe32.th32ProcessID, pe32.szExeFile);
+        printf("Process ID: %u\t Parent Process ID: %u\tExecutable Name: %s\n", pe32.th32ProcessID, pe32.th32ParentProcessID, pe32.szExeFile);
     } while(Process32Next(hProcessSnap, &pe32));
 
     CloseHandle(hProcessSnap);
