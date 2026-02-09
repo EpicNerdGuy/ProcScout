@@ -17,9 +17,16 @@ void print_banner(){
     );
 }
 
+void print_usage(char *exec_name){
+    printf("\nUsage:\n");
+    printf("  %s --list | -l\n", exec_name);
+    printf("  %s --pid <PID>\n", exec_name);
+    printf("  %s --exe-name <name>\n\n",exec_name);
+}
 
 
-int main(){
+
+int main(int argc, char* argv[]){
     HANDLE hProcessSnap;
     PROCESSENTRY32 pe32;
 
@@ -38,10 +45,18 @@ int main(){
         CloseHandle(hProcessSnap);
         return 1;
     }
+    printf("+------------+--------------------+---------------------------+\n");
+    printf("| Process ID | Parent Process ID  | Executable Name            |\n");
+    printf("+------------+--------------------+---------------------------+\n");
 
-    do{
-        printf("Process ID: %u\t Parent Process ID: %u\tExecutable Name: %s\n", pe32.th32ProcessID, pe32.th32ParentProcessID, pe32.szExeFile);
-    } while(Process32Next(hProcessSnap, &pe32));
+    do {
+        printf("| %-10u | %-18u | %-25s |\n",
+           pe32.th32ProcessID,
+           pe32.th32ParentProcessID,
+           pe32.szExeFile);
+        } while (Process32Next(hProcessSnap, &pe32));
+
+    printf("+------------+--------------------+---------------------------+\n");
 
     CloseHandle(hProcessSnap);
     return 0;
